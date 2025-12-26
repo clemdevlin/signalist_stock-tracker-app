@@ -4,10 +4,11 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import InputField from '@/components/forms/InputField';
 import FooterLink from '@/components/forms/FooterLink';
-import {signInWithEmail, signUpWithEmail} from "@/lib/actions/auth.actions";
-import {toast} from "sonner";
-import {signInEmail} from "better-auth/api";
-import {useRouter} from "next/navigation";
+import { signInWithEmail, signUpWithEmail } from "@/lib/actions/auth.actions";
+import { toast } from "sonner";
+import { signInEmail } from "better-auth/api";
+import { useRouter } from "next/navigation";
+import { Loader } from 'lucide-react';
 
 const SignIn = () => {
     const router = useRouter()
@@ -26,7 +27,7 @@ const SignIn = () => {
     const onSubmit = async (data: SignInFormData) => {
         try {
             const result = await signInWithEmail(data);
-            if(result.success) router.push('/');
+            if (result.success) router.push('/');
         } catch (e) {
             console.error(e);
             toast.error('Sign in failed', {
@@ -60,7 +61,12 @@ const SignIn = () => {
                 />
 
                 <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-5">
-                    {isSubmitting ? 'Signing In' : 'Sign In'}
+                    {isSubmitting ? (
+                        <div className="flex items-center gap-2">
+                            <Loader className="h-4 w-4 animate-spin" />
+                            <span>Signing In...</span>
+                        </div>
+                    ) : 'Sign In'}
                 </Button>
 
                 <FooterLink text="Don't have an account?" linkText="Create an account" href="/sign-up" />
