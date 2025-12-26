@@ -10,6 +10,7 @@ import FooterLink from "@/components/forms/FooterLink";
 import {signUpWithEmail} from "@/lib/actions/auth.actions";
 import {useRouter} from "next/navigation";
 import {toast} from "sonner";
+import {Loader} from "lucide-react";
 
 const SignUp = () => {
     const router = useRouter()
@@ -63,7 +64,7 @@ const SignUp = () => {
                     placeholder="contact@jsmastery.com"
                     register={register}
                     error={errors.email}
-                    validation={{ required: 'Email name is required', pattern: /^\w+@\w+\.\w+$/, message: 'Email address is required' }}
+                    validation={{ required: 'Email name is required', pattern: /^[\w]+@([\w]+\.)+[\w]+$/, message: 'Email address is required' }}
                 />
 
                 <InputField
@@ -115,7 +116,12 @@ const SignUp = () => {
                 />
 
                 <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-5">
-                    {isSubmitting ? 'Creating Account' : 'Start Your Investing Journey'}
+                    {isSubmitting ? (
+                        <div className="flex items-center gap-2">
+                            <Loader className="h-4 w-4 animate-spin" />
+                            <span>Creating Account</span>
+                        </div>
+                    ) : 'Start Your Investing Journey'}
                 </Button>
 
                 <FooterLink text="Already have an account?" linkText="Sign in" href="/sign-in" />
